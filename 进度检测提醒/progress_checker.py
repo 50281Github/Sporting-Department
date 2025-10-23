@@ -16,27 +16,7 @@ def load_config() -> Dict[str, Any]:
     base_dir = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(base_dir, '..', 'config.json')
     with open(config_path, 'r', encoding='utf-8') as f:
-        cfg = json.load(f)
-    # 允许在 Streamlit Cloud 上使用 st.secrets 覆盖敏感配置（如 Cookie、Headers 等）
-    try:
-        import streamlit as st  # type: ignore
-        # 仅当有相应 key 时才做合并，避免 KeyError
-        def merge_dict(dst: dict, src: dict):
-            for k, v in src.items():
-                if isinstance(v, dict) and isinstance(dst.get(k), dict):
-                    merge_dict(dst[k], v)
-                else:
-                    dst[k] = v
-        # 常用的顶层配置块
-        for section in ('api', 'monitor', 'retry', 'collection'):
-            if section in st.secrets:
-                if section not in cfg or not isinstance(cfg.get(section), dict):
-                    cfg[section] = {}
-                merge_dict(cfg[section], dict(st.secrets[section]))
-    except Exception:
-        # 非 Streamlit 环境或无 secrets 时忽略
-        pass
-    return cfg
+        return json.load(f)
 
 
 def floor_to_5_min(dt: datetime | None = None) -> str:

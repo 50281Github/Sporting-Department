@@ -327,7 +327,7 @@ try:
     cfg = pc.load_config()
     monitor_cfg = cfg.get('monitor', {})
     threshold = float(monitor_cfg.get('alert_threshold_percent', 2.0))
-    baseline_file = monitor_cfg.get('baseline_file') or os.path.join(os.path.dirname(__file__), '进度基准_1分钟_截止0510.csv')
+    baseline_file = monitor_cfg.get('baseline_file') or os.path.join(base_dir, '进度基准_1分钟_截止0510.csv')
     baseline = pc.load_baseline(baseline_file)
 
     # 加载分类基准数据
